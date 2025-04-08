@@ -1,0 +1,131 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+    <div class="text-center">
+      <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+        {{ isLoginMode ? 'Iniciar Sesión' : 'Crear Cuenta' }}
+      </h2>
+      <p class="mt-2 text-sm text-gray-600">
+        {{ isLoginMode ? '¿No tienes una cuenta?' : '¿Ya tienes una cuenta?' }}
+        <button 
+          type="button" 
+          class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
+          (click)="toggleAuthMode()">
+          {{ isLoginMode ? 'Regístrate' : 'Inicia sesión' }}
+        </button>
+      </p>
+    </div>
+
+    <form class="mt-8 space-y-6" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+      @if (errorMessage) {
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">{{ errorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-green-700">{{ successMessage }}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (!isLoginMode) {
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+          <div class="mt-1">
+            <input 
+              id="name" 
+              name="name" 
+              type="text" 
+              formControlName="name" 
+              required 
+              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="Tu nombre completo">
+          </div>
+          @if (authForm.get('name')?.invalid && authForm.get('name')?.touched) {
+            <p class="mt-1 text-sm text-red-600">El nombre es requerido</p>
+          }
+        </div>
+      }
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+        <div class="mt-1">
+          <input 
+            id="email" 
+            name="email" 
+            type="email" 
+            formControlName="email" 
+            required 
+            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="correo@ejemplo.com">
+        </div>
+        @if (authForm.get('email')?.invalid && authForm.get('email')?.touched) {
+          <p class="mt-1 text-sm text-red-600">
+            @if (authForm.get('email')?.errors?.['required']) {
+              El correo electrónico es requerido
+            } @else if (authForm.get('email')?.errors?.['email']) {
+              Ingresa un correo electrónico válido
+            }
+          </p>
+        }
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <div class="mt-1">
+          <input 
+            id="password" 
+            name="password" 
+            type="password" 
+            formControlName="password" 
+            required 
+            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="••••••">
+        </div>
+        @if (authForm.get('password')?.invalid && authForm.get('password')?.touched) {
+          <p class="mt-1 text-sm text-red-600">
+            @if (authForm.get('password')?.errors?.['required']) {
+              La contraseña es requerida
+            } @else if (authForm.get('password')?.errors?.['minlength']) {
+              La contraseña debe tener al menos 6 caracteres
+            }
+          </p>
+        }
+      </div>
+
+      <div>
+        <button 
+          type="submit" 
+          [disabled]="authForm.invalid || isSubmitting"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
+          @if (isSubmitting) {
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          }
+          {{ isLoginMode ? 'Iniciar Sesión' : 'Registrarse' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
