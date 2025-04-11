@@ -19,9 +19,9 @@ export class AuthComponent implements OnInit {
   successMessage = ""
 
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly authService: AuthService,
-    private readonly router: Router,
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -70,33 +70,38 @@ export class AuthComponent implements OnInit {
         },
         error: (error) => {
           this.isSubmitting = false
-          console.error("Error de login:", error)
-          this.errorMessage =
-            error.error?.detail || error.error?.message || "Error al iniciar sesión. Verifica tus credenciales."
+          this.errorMessage = error.error?.message || "Error al iniciar sesión. Verifica tus credenciales."
         },
       })
     } else {
       // Modo registro
       this.authService.register(this.authForm.value).subscribe({
-        next: () => {
+        next: (response) => {
           this.isSubmitting = false
-          this.successMessage = "Registro exitoso. Por favor, inicia sesión con tus credenciales."
+          this.successMessage = "Registro exitoso. Iniciando sesión automáticamente..."
 
-          // Cambiar a modo login después de un registro exitoso
-          setTimeout(() => {
-            this.isLoginMode = true
-            this.authForm.removeControl("name")
-            this.authForm.reset()
-          }, 1500)
+          // After successful registration, automatically log in
+          const loginCredentials = {
+            email: this.authForm.value.email,
+            password: this.authForm.value.password,
+          }
+
+          this.authService.login(loginCredentials).subscribe({
+            next: () => {
+              this.router.navigate(["/trip-dashboard"])
+            },
+            error: (loginError) => {
+              this.isSubmitting = false
+              this.errorMessage = loginError.error?.message || "Error al iniciar sesión automáticamente."
+            },
+          })
         },
         error: (error) => {
           this.isSubmitting = false
-          console.error("Error de registro:", error)
-          this.errorMessage = error.error?.detail || error.error?.message || "Error al registrarse. Inténtalo de nuevo."
+          this.errorMessage = error.error?.message || "Error al registrarse. Inténtalo de nuevo."
         },
       })
     }
   }
 }
-
 

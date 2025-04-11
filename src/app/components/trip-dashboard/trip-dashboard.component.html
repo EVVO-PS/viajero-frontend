@@ -1,20 +1,29 @@
-<!-- Añadir esto al principio del archivo HTML existente -->
-<div class="auth-header bg-white shadow-sm mb-4">
-  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-gray-900">Planificador de Viajes</h1>
-    <div class="flex items-center space-x-4">
-      <span class="text-gray-700" *ngIf="currentUser">Hola, {{ currentUser.name || 'Usuario' }}</span>
-      <button 
-        (click)="logout()" 
-        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg>
-        Cerrar sesión
-      </button>
+<!-- Header con diseño mejorado usando Bootstrap -->
+<header class="bg-white shadow-sm border-bottom">
+  <div class="container py-3">
+    <div class="row align-items-center">
+      <div class="col">
+        <h1 class="fs-4 fw-bold text-primary mb-0">Planificador de Viajes</h1>
+      </div>
+      <div class="col-auto d-flex align-items-center">
+        <div class="d-none d-sm-block me-3" *ngIf="currentUser">
+          <span class="text-secondary">
+            Hola, <span class="fw-medium">{{ currentUser.name || 'Usuario' }}</span>
+          </span>
+        </div>
+        <div *ngIf="currentUser">
+          <button 
+            (click)="logout()" 
+            class="btn btn-primary d-flex align-items-center logout-button">
+            <i class="bi bi-box-arrow-right me-2"></i>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</header>
+
 
 <div class="container mt-4">
   <h2 class="mb-4">✈️ Planificador de Viajes</h2>

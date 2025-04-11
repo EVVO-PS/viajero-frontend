@@ -1011,8 +1011,6 @@ formatDate(date: Date | string | undefined): string {
     this.markAsChanged();
   }
 
-  // Método para verificar si hay superposición entre fechas de destinos
-// Método para verificar si hay superposición entre fechas de destinos
 checkDateOverlap(startDate: Date | string, endDate: Date | string, destinationId?: number): boolean {
   if (!startDate || !endDate) return false;
   

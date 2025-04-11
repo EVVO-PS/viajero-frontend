@@ -1,131 +1,180 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
-    <div class="text-center">
-      <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-        {{ isLoginMode ? 'Iniciar Sesión' : 'Crear Cuenta' }}
-      </h2>
-      <p class="mt-2 text-sm text-gray-600">
-        {{ isLoginMode ? '¿No tienes una cuenta?' : '¿Ya tienes una cuenta?' }}
-        <button 
-          type="button" 
-          class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
-          (click)="toggleAuthMode()">
-          {{ isLoginMode ? 'Regístrate' : 'Inicia sesión' }}
-        </button>
-      </p>
+<div class="auth-container d-flex flex-column min-vh-100">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="container py-3">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="fs-4 fw-bold text-primary mb-0">Planificador de Viajes</h1>
+        </div>
+      </div>
     </div>
+  </header>
 
-    <form class="mt-8 space-y-6" [formGroup]="authForm" (ngSubmit)="onSubmit()">
-      @if (errorMessage) {
-        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-              </svg>
+  <!-- Contenido principal -->
+  <main class="flex-grow-1 d-flex align-items-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <!-- Card con efecto de elevación -->
+          <div class="card auth-card border-0 shadow-lg overflow-hidden">
+            <!-- Cabecera de la tarjeta -->
+            <div class="card-header text-black text-center py-4 bg-gradient">
+              <h2 class="fs-3 fw-bold mb-1 text-black">
+                {{ isLoginMode ? 'Bienvenido de nuevo' : 'Crear una cuenta' }}
+              </h2>
+              <p class="mb-0 text-black-50 small">
+                {{ isLoginMode ? 'Inicia sesión para acceder a tu cuenta' : 'Regístrate para comenzar a planificar tus viajes' }}
+              </p>
             </div>
-            <div class="ml-3">
-              <p class="text-sm text-red-700">{{ errorMessage }}</p>
+            
+            <!-- Cuerpo del formulario -->
+            <div class="card-body p-4">
+              <form class="needs-validation" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+                <!-- Mensajes de error y éxito -->
+                @if (errorMessage) {
+                  <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>{{ errorMessage }}</div>
+                  </div>
+                }
+
+                @if (successMessage) {
+                  <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <div>{{ successMessage }}</div>
+                  </div>
+                }
+
+                <!-- Campo de nombre (solo en modo registro) -->
+                @if (!isLoginMode) {
+                  <div class="mb-3">
+                    <label for="name" class="form-label">Nombre</label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="bi bi-person-fill"></i>
+                      </span>
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="name" 
+                        formControlName="name" 
+                        placeholder="Tu nombre completo"
+                        [ngClass]="{'is-invalid': authForm.get('name')?.invalid && authForm.get('name')?.touched}"
+                        required>
+                      @if (authForm.get('name')?.invalid && authForm.get('name')?.touched) {
+                        <div class="invalid-feedback">
+                          El nombre es requerido
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Campo de email -->
+                <div class="mb-3">
+                  <label for="email" class="form-label">Correo electrónico</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-envelope-fill"></i>
+                    </span>
+                    <input 
+                      type="email" 
+                      class="form-control" 
+                      id="email" 
+                      formControlName="email" 
+                      placeholder="correo@ejemplo.com"
+                      [ngClass]="{'is-invalid': authForm.get('email')?.invalid && authForm.get('email')?.touched}"
+                      required>
+                    @if (authForm.get('email')?.invalid && authForm.get('email')?.touched) {
+                      <div class="invalid-feedback">
+                        @if (authForm.get('email')?.errors?.['required']) {
+                          El correo electrónico es requerido
+                        } @else if (authForm.get('email')?.errors?.['email']) {
+                          Ingresa un correo electrónico válido
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Campo de contraseña -->
+                <div class="mb-4">
+                  <label for="password" class="form-label">Contraseña</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <input 
+                      type="password" 
+                      class="form-control" 
+                      id="password" 
+                      formControlName="password" 
+                      placeholder="••••••"
+                      [ngClass]="{'is-invalid': authForm.get('password')?.invalid && authForm.get('password')?.touched}"
+                      required>
+                    @if (authForm.get('password')?.invalid && authForm.get('password')?.touched) {
+                      <div class="invalid-feedback">
+                        @if (authForm.get('password')?.errors?.['required']) {
+                          La contraseña es requerida
+                        } @else if (authForm.get('password')?.errors?.['minlength']) {
+                          La contraseña debe tener al menos 6 caracteres
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Botón de envío -->
+                <div class="d-grid gap-2">
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary btn-lg submit-button"
+                    [disabled]="authForm.invalid || isSubmitting">
+                    @if (isSubmitting) {
+                      <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    }
+                    {{ isLoginMode ? 'Iniciar Sesión' : 'Registrarse' }}
+                  </button>
+                </div>
+              </form>
+
+              <!-- Separador -->
+              <div class="position-relative my-4">
+                <hr class="text-muted">
+                <div class="position-absolute top-50 start-50 translate-middle px-3 bg-white text-muted small">
+                  {{ isLoginMode ? '¿No tienes una cuenta?' : '¿Ya tienes una cuenta?' }}
+                </div>
+              </div>
+
+              <!-- Botón para cambiar de modo -->
+              <div class="d-grid gap-2">
+                <button 
+                  type="button" 
+                  class="btn btn-outline-secondary"
+                  (click)="toggleAuthMode()">
+                  {{ isLoginMode ? 'Crear una cuenta nueva' : 'Iniciar sesión con tu cuenta' }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      }
+      </div>
+    </div>
+  </main>
 
-      @if (successMessage) {
-        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm text-green-700">{{ successMessage }}</p>
-            </div>
-          </div>
-        </div>
-      }
-
-      @if (!isLoginMode) {
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
-          <div class="mt-1">
-            <input 
-              id="name" 
-              name="name" 
-              type="text" 
-              formControlName="name" 
-              required 
-              class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Tu nombre completo">
-          </div>
-          @if (authForm.get('name')?.invalid && authForm.get('name')?.touched) {
-            <p class="mt-1 text-sm text-red-600">El nombre es requerido</p>
-          }
-        </div>
-      }
-
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
-        <div class="mt-1">
-          <input 
-            id="email" 
-            name="email" 
-            type="email" 
-            formControlName="email" 
-            required 
-            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="correo@ejemplo.com">
-        </div>
-        @if (authForm.get('email')?.invalid && authForm.get('email')?.touched) {
-          <p class="mt-1 text-sm text-red-600">
-            @if (authForm.get('email')?.errors?.['required']) {
-              El correo electrónico es requerido
-            } @else if (authForm.get('email')?.errors?.['email']) {
-              Ingresa un correo electrónico válido
-            }
+  <!-- Footer -->
+  <footer class="bg-white border-top py-3 mt-auto">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="text-muted mb-0 small">
+            &copy; <a href="https://www.instagram.com/evvo.ps/?hl=es" target="_blank" class="text-decoration-none text-primary fw-semibold">
+              Una aplicación de EVVO+
+            </a> | 2025 Planificador de Viajes. Todos los derechos reservados.
           </p>
-        }
-      </div>
-
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-        <div class="mt-1">
-          <input 
-            id="password" 
-            name="password" 
-            type="password" 
-            formControlName="password" 
-            required 
-            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="••••••">
         </div>
-        @if (authForm.get('password')?.invalid && authForm.get('password')?.touched) {
-          <p class="mt-1 text-sm text-red-600">
-            @if (authForm.get('password')?.errors?.['required']) {
-              La contraseña es requerida
-            } @else if (authForm.get('password')?.errors?.['minlength']) {
-              La contraseña debe tener al menos 6 caracteres
-            }
-          </p>
-        }
+        
       </div>
-
-      <div>
-        <button 
-          type="submit" 
-          [disabled]="authForm.invalid || isSubmitting"
-          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
-          @if (isSubmitting) {
-            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          }
-          {{ isLoginMode ? 'Iniciar Sesión' : 'Registrarse' }}
-        </button>
-      </div>
-    </form>
-  </div>
+    </div>
+  </footer>
 </div>
-
