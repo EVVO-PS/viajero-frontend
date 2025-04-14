@@ -12,9 +12,7 @@
           </span>
         </div>
         <div *ngIf="currentUser">
-          <button 
-            (click)="logout()" 
-            class="btn btn-primary d-flex align-items-center logout-button">
+          <button (click)="logout()" class="btn btn-primary d-flex align-items-center logout-button">
             <i class="bi bi-box-arrow-right me-2"></i>
             Cerrar sesión
           </button>
@@ -27,66 +25,39 @@
 
 <div class="container mt-4">
   <h2 class="mb-4">✈️ Planificador de Viajes</h2>
-  
+
   <!-- Sección de creación de viajes -->
   <div class="card p-3 mb-3">
     <h4>🧳 {{ isEditingTrip ? 'Editar Viaje' : 'Crear Nuevo Viaje' }}</h4>
     <div class="row g-3">
       <div class="col-md-4">
         <label for="tripName" class="form-label">Nombre del Viaje</label>
-        <input 
-          type="text" 
-          id="tripName" 
-          class="form-control" 
-          placeholder="Ej: Vacaciones en Europa" 
-          [(ngModel)]="trip.name"
-          (input)="onInputChange()">
+        <input type="text" id="tripName" class="form-control" placeholder="Ej: Vacaciones en Europa"
+          [(ngModel)]="trip.name" (input)="onInputChange()">
       </div>
       <div class="col-md-3">
         <label for="tripStartDate" class="form-label">Fecha de Inicio</label>
-        <input 
-          type="date" 
-          id="tripStartDate" 
-          class="form-control" 
-          [(ngModel)]="trip.fecha_inicio"
+        <input type="date" id="tripStartDate" class="form-control" [(ngModel)]="trip.fecha_inicio"
           (change)="calculateTripDays(); onInputChange()">
       </div>
       <div class="col-md-3">
         <label for="tripEndDate" class="form-label">Fecha de Fin</label>
-        <input 
-          type="date" 
-          id="tripEndDate" 
-          class="form-control" 
-          [(ngModel)]="trip.fecha_fin"
+        <input type="date" id="tripEndDate" class="form-control" [(ngModel)]="trip.fecha_fin"
           (change)="calculateTripDays(); onInputChange()">
       </div>
       <div class="col-md-2">
         <label for="tripDays" class="form-label">Días Totales</label>
-        <input 
-          type="number" 
-          id="tripDays" 
-          class="form-control" 
-          [value]="trip.total_days || 0"
-          readonly>
+        <input type="number" id="tripDays" class="form-control" [value]="trip.total_days || 0" readonly>
       </div>
     </div>
     <div class="d-flex justify-content-end mt-3 gap-2">
-      <button 
-        *ngIf="!isEditingTrip" 
-        class="btn btn-primary" 
-        (click)="createTrip()">
+      <button *ngIf="!isEditingTrip" class="btn btn-primary" (click)="createTrip()">
         🛫 Crear Viaje
       </button>
-      <button 
-        *ngIf="isEditingTrip" 
-        class="btn btn-success" 
-        (click)="saveCurrentTrip()">
+      <button *ngIf="isEditingTrip" class="btn btn-success" (click)="saveCurrentTrip()">
         💾 Guardar Cambios
       </button>
-      <button 
-        *ngIf="isEditingTrip" 
-        class="btn btn-secondary" 
-        (click)="exitEditing()">
+      <button *ngIf="isEditingTrip" class="btn btn-secondary" (click)="exitEditing()">
         ❌ Salir
       </button>
     </div>
@@ -97,27 +68,18 @@
     <h4>🏙️ Destinos {{ isEditingTrip ? 'para ' + trip.name : '' }}</h4>
     <div class="row g-3">
       <div class="col-md-3">
-        <input 
-          type="text" 
-          class="form-control" 
-          placeholder="Nombre del Destino" 
-          [(ngModel)]="newDestination.name" 
+        <input type="text" class="form-control" placeholder="Nombre del Destino" [(ngModel)]="newDestination.name"
           [disabled]="!destinationSectionEnabled">
       </div>
-      
+
       <!-- Input de país con autocompletado -->
       <div class="col-md-3 position-relative">
-        <input 
-          type="text" 
-          class="form-control" 
-          placeholder="País" 
-          [(ngModel)]="newDestination.country" 
-          (input)="searchCountries($event)" 
-          (blur)="hideCountrySuggestions()"
-          [disabled]="!destinationSectionEnabled">
-        
+        <input type="text" class="form-control" placeholder="País" [(ngModel)]="newDestination.country"
+          (input)="searchCountries($event)" (blur)="hideCountrySuggestions()" [disabled]="!destinationSectionEnabled">
+
         <!-- Lista de sugerencias de países -->
-        <div *ngIf="showCountrySuggestions" class="position-absolute w-100 mt-1 shadow-sm border rounded bg-white z-index-dropdown">
+        <div *ngIf="showCountrySuggestions"
+          class="position-absolute w-100 mt-1 shadow-sm border rounded bg-white z-index-dropdown">
           <div *ngIf="isLoadingCountries" class="p-2 text-center">
             <div class="spinner-border spinner-border-sm text-primary" role="status">
               <span class="visually-hidden">Cargando...</span>
@@ -127,57 +89,39 @@
           <div *ngIf="!isLoadingCountries && filteredCountries.length === 0" class="p-2 text-muted">
             No se encontraron países
           </div>
-          <div 
-            *ngFor="let country of filteredCountries" 
-            class="p-2 border-bottom d-flex align-items-center country-suggestion"
-            (mousedown)="selectCountry(country)">
-            <img 
-              [src]="country.flags.png" 
-              [alt]="country.flags.alt || country.name.common" 
-              class="me-2" 
+          <div *ngFor="let country of filteredCountries"
+            class="p-2 border-bottom d-flex align-items-center country-suggestion" (mousedown)="selectCountry(country)">
+            <img [src]="country.flags.png" [alt]="country.flags.alt || country.name.common" class="me-2"
               style="width: 24px; height: 16px; object-fit: cover;">
             <span>{{ country.name.common }}</span>
           </div>
         </div>
       </div>
-      
+
       <!-- Fecha de inicio del destino -->
       <div class="col-md-2">
-        <input 
-          type="date" 
-          class="form-control" 
-          placeholder="Fecha de inicio" 
-          [(ngModel)]="newDestination.fecha_inicio" 
-          [min]="formatDateForInput(trip.fecha_inicio)"
-          [max]="formatDateForInput(trip.fecha_fin)"
+        <input type="date" class="form-control" placeholder="Fecha de inicio" [(ngModel)]="newDestination.fecha_inicio"
+          [min]="formatDateForInput(trip.fecha_inicio)" [max]="formatDateForInput(trip.fecha_fin)"
           [disabled]="!destinationSectionEnabled">
       </div>
-      
+
       <!-- Fecha de fin del destino -->
       <div class="col-md-2">
-        <input 
-          type="date" 
-          class="form-control" 
-          placeholder="Fecha de fin" 
-          [(ngModel)]="newDestination.fecha_fin" 
+        <input type="date" class="form-control" placeholder="Fecha de fin" [(ngModel)]="newDestination.fecha_fin"
           [min]="newDestination.fecha_inicio ? formatDateForInput(newDestination.fecha_inicio) : formatDateForInput(trip.fecha_inicio)"
-          [max]="formatDateForInput(trip.fecha_fin)"
-          [disabled]="!destinationSectionEnabled">
+          [max]="formatDateForInput(trip.fecha_fin)" [disabled]="!destinationSectionEnabled">
       </div>
-      
+
       <!-- Días calculados (solo para mostrar) -->
       <div class="col-md-1 d-flex align-items-center">
         <span class="badge bg-secondary">
-          {{ newDestination.fecha_inicio && newDestination.fecha_fin ? 
-             calculateDays(newDestination.fecha_inicio, newDestination.fecha_fin) : 0 }} días
+          {{ newDestination.fecha_inicio && newDestination.fecha_fin ?
+          calculateDays(newDestination.fecha_inicio, newDestination.fecha_fin) : 0 }} días
         </span>
       </div>
-      
+
       <div class="col-md-1">
-        <button 
-          class="btn btn-success w-100" 
-          (click)="addDestination()" 
-          [disabled]="!destinationSectionEnabled">
+        <button class="btn btn-success w-100" (click)="addDestination()" [disabled]="!destinationSectionEnabled">
           ➕
         </button>
       </div>
@@ -215,34 +159,32 @@
                 <td>{{ formatDate(destination.fecha_inicio) }}</td>
                 <td>{{ formatDate(destination.fecha_fin) }}</td>
                 <td>
-                  {{ destination.days || 
-                     (destination.fecha_inicio && destination.fecha_fin ? 
-                      calculateDays(destination.fecha_inicio, destination.fecha_fin) : 0) }}
+                  {{ destination.days ||
+                  (destination.fecha_inicio && destination.fecha_fin ?
+                  calculateDays(destination.fecha_inicio, destination.fecha_fin) : 0) }}
                 </td>
                 <td>
                   <button class="btn btn-sm btn-primary me-2" (click)="startEditingDestination(destination)">✏️</button>
                   <button class="btn btn-sm btn-danger" (click)="removeDestination(destination)">🗑️</button>
                 </td>
               </ng-container>
-              
+
               <!-- Vista de edición del destino -->
               <ng-container *ngIf="editingDestination?.id === destination.id">
                 <td colspan="6">
                   <div class="row g-2">
                     <div class="col-md-2">
-                      <input type="text" class="form-control form-control-sm" placeholder="Nombre" [(ngModel)]="editDestinationForm.name">
+                      <input type="text" class="form-control form-control-sm" placeholder="Nombre"
+                        [(ngModel)]="editDestinationForm.name">
                     </div>
                     <div class="col-md-2 position-relative">
-                      <input 
-                        type="text" 
-                        class="form-control form-control-sm" 
-                        placeholder="País" 
-                        [(ngModel)]="editDestinationForm.country"
-                        (input)="searchCountries($event)" 
+                      <input type="text" class="form-control form-control-sm" placeholder="País"
+                        [(ngModel)]="editDestinationForm.country" (input)="searchCountries($event)"
                         (blur)="hideCountrySuggestions()">
-                      
+
                       <!-- Lista de sugerencias de países para la edición -->
-                      <div *ngIf="showCountrySuggestions" class="position-absolute w-100 mt-1 shadow-sm border rounded bg-white z-index-dropdown">
+                      <div *ngIf="showCountrySuggestions"
+                        class="position-absolute w-100 mt-1 shadow-sm border rounded bg-white z-index-dropdown">
                         <div *ngIf="isLoadingCountries" class="p-2 text-center">
                           <div class="spinner-border spinner-border-sm text-primary" role="status">
                             <span class="visually-hidden">Cargando...</span>
@@ -252,39 +194,30 @@
                         <div *ngIf="!isLoadingCountries && filteredCountries.length === 0" class="p-2 text-muted">
                           No se encontraron países
                         </div>
-                        <div 
-                          *ngFor="let country of filteredCountries" 
+                        <div *ngFor="let country of filteredCountries"
                           class="p-2 border-bottom d-flex align-items-center country-suggestion"
                           (mousedown)="editDestinationForm.country = country.name.common; showCountrySuggestions = false;">
-                          <img 
-                            [src]="country.flags.png" 
-                            [alt]="country.flags.alt || country.name.common" 
-                            class="me-2" 
+                          <img [src]="country.flags.png" [alt]="country.flags.alt || country.name.common" class="me-2"
                             style="width: 24px; height: 16px; object-fit: cover;">
                           <span>{{ country.name.common }}</span>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-2">
-                      <input 
-                        type="date" 
-                        class="form-control form-control-sm" 
-                        [(ngModel)]="editDestinationForm.fecha_inicio"
-                        [min]="formatDateForInput(trip.fecha_inicio)"
+                      <input type="date" class="form-control form-control-sm"
+                        [(ngModel)]="editDestinationForm.fecha_inicio" [min]="formatDateForInput(trip.fecha_inicio)"
                         [max]="formatDateForInput(trip.fecha_fin)">
                     </div>
                     <div class="col-md-2">
-                      <input 
-                        type="date" 
-                        class="form-control form-control-sm" 
+                      <input type="date" class="form-control form-control-sm"
                         [(ngModel)]="editDestinationForm.fecha_fin"
                         [min]="editDestinationForm.fecha_inicio ? formatDateForInput(editDestinationForm.fecha_inicio) : formatDateForInput(trip.fecha_inicio)"
                         [max]="formatDateForInput(trip.fecha_fin)">
                     </div>
                     <div class="col-md-1 d-flex align-items-center">
                       <span class="badge bg-secondary">
-                        {{ editDestinationForm.fecha_inicio && editDestinationForm.fecha_fin ? 
-                           calculateDays(editDestinationForm.fecha_inicio, editDestinationForm.fecha_fin) : 0 }} días
+                        {{ editDestinationForm.fecha_inicio && editDestinationForm.fecha_fin ?
+                        calculateDays(editDestinationForm.fecha_inicio, editDestinationForm.fecha_fin) : 0 }} días
                       </span>
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
@@ -304,24 +237,19 @@
   <!-- Sección de viajes guardados -->
   <div class="card p-3">
     <h4>🗂️ Viajes Guardados</h4>
-    
+
     <div *ngIf="createdTrips.length === 0" class="alert alert-info">
       No hay viajes guardados. ¡Crea tu primer viaje!
     </div>
-    
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="createdTrips.length > 0">
       <div class="col" *ngFor="let savedTrip of createdTrips">
-        <div 
-          class="card h-100 saved-trip-card" 
-          [class.selected-trip]="selectedTripId === savedTrip.id"
+        <div class="card h-100 saved-trip-card" [class.selected-trip]="selectedTripId === savedTrip.id"
           (click)="selectTrip(savedTrip)">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start">
               <h5 class="card-title">{{ savedTrip.name }}</h5>
-              <button 
-                class="btn btn-sm btn-danger" 
-                (click)="deleteTrip(savedTrip, $event)"
-                title="Eliminar viaje">
+              <button class="btn btn-sm btn-danger" (click)="deleteTrip(savedTrip, $event)" title="Eliminar viaje">
                 🗑️
               </button>
             </div>
@@ -338,14 +266,11 @@
               </small>
             </p>
             <div class="destination-pills" *ngIf="savedTrip.destinations && savedTrip.destinations.length > 0">
-              <span 
-                class="badge rounded-pill bg-light text-dark me-1 mb-1" 
+              <span class="badge rounded-pill bg-light text-dark me-1 mb-1"
                 *ngFor="let dest of savedTrip.destinations.slice(0, 3)">
                 {{ dest.name }}
               </span>
-              <span 
-                class="badge rounded-pill bg-secondary text-white" 
-                *ngIf="savedTrip.destinations.length > 3">
+              <span class="badge rounded-pill bg-secondary text-white" *ngIf="savedTrip.destinations.length > 3">
                 +{{ savedTrip.destinations.length - 3 }} más
               </span>
             </div>
@@ -354,47 +279,67 @@
       </div>
     </div>
   </div>
+
+
+  <div class="mt-4 d-flex flex-column align-items-center">
+    <a href="https://www.instagram.com/evvo.ps/?hl=es" target="_blank" class="mb-4 text-center text-decoration-none">
+      <div class="hover-img-wrapper">
+        <img src="/assets/images/fondo-mini.png" alt="Servicios de programación"
+          class="img-fluid rounded shadow hover-scale">
+        <a class="mt-2 fw-semibold text-dark && descripcion">💻 Conocé mis servicios de programación en Instagram</a>
+      </div>
+    </a>
+
+    <a href="https://www.instagram.com/europa_lowcost/?hl=es" target="_blank" class="text-center text-decoration-none">
+      <div class="hover-img-wrapper">
+        <img src="/assets/images/europalowcost.png" alt="Consejos para viajar a Europa"
+          class="img-fluid rounded shadow hover-scale">
+        <a class="mt-2 fw-semibold text-dark && descripcion ">✈️ Tips para viajar por Europa en el menor costo posible</a>
+      </div>
+    </a>
+  </div>
 </div>
 
+<br>
 <style>
   .disabled-section {
     opacity: 0.6;
     pointer-events: none;
   }
-  
+
   .saved-trip-card {
     cursor: pointer;
     transition: all 0.2s ease;
     border: 2px solid transparent;
   }
-  
+
   .saved-trip-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .selected-trip {
     border-color: #0d6efd;
     background-color: rgba(13, 110, 253, 0.05);
   }
-  
+
   .destination-pills {
     margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
   }
-  
+
   /* Estilos para el dropdown de países */
   .z-index-dropdown {
     z-index: 1050;
     max-height: 300px;
     overflow-y: auto;
   }
-  
+
   .country-suggestion {
     cursor: pointer;
   }
-  
+
   .country-suggestion:hover {
     background-color: #f8f9fa;
   }

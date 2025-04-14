@@ -68,4 +68,33 @@ button:focus:not(:active)::after {
     transform: scale(20, 20);
     opacity: 0;
   }
+  
+}
+
+.hover-img-wrapper {
+  margin: 15px;
+}
+
+.hover-scale {
+  width: 335px;
+  height: 231px;
+  object-fit: cover; 
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.hover-scale:hover {
+  transform: scale(1.1);
+}
+
+.hover-img-wrapper p {
+  font-size: 0.85rem; 
+  margin-top: 0.5rem;
+  max-width: 150px; 
+  text-align: center;
+}
+
+.descripcion{
+  margin: 18px;
 }
