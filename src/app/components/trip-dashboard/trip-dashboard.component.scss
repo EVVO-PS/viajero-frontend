@@ -13,6 +13,48 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .disabled-section {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .saved-trip-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+  }
+
+  .saved-trip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .selected-trip {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05);
+  }
+
+  .destination-pills {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* Estilos para el dropdown de países */
+  .z-index-dropdown {
+    z-index: 1050;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .country-suggestion {
+    cursor: pointer;
+  }
+
+  .country-suggestion:hover {
+    background-color: #f8f9fa;
+  }
   /* Estilos para el header */
 .bg-white.shadow-sm {
   position: sticky;
@@ -95,6 +137,34 @@ button:focus:not(:active)::after {
   text-align: center;
 }
 
-.descripcion{
+/* Estilos para la descripción */
+.descripcion {
   margin: 18px;
+  color: #000;
+  text-decoration: none;
+  
 }
+
+.dark-text {
+  color: #f1f1f1 !important;
+}
+
+.dark-footer {
+  background-color: #212529 !important;
+  color: #f1f1f1 !important;
+}
+
+.dark-footer a {
+  color: #9ec5fe !important;
+}
+
+footer {
+  position: relative;
+  width: 100%;
+}
+
+.bi {
+  line-height: 1;
+}
+
+

@@ -1,4 +1,3 @@
-<!-- Header con diseño mejorado usando Bootstrap -->
 <header class="bg-white shadow-sm border-bottom">
   <div class="container py-3">
     <div class="row align-items-center">
@@ -6,6 +5,12 @@
         <h1 class="fs-4 fw-bold text-primary mb-0">Planificador de Viajes</h1>
       </div>
       <div class="col-auto d-flex align-items-center">
+
+         <button (click)="toggleTheme()" class="btn btn-outline-secondary me-3 theme-toggle-btn">
+          <i class="bi" [ngClass]="{'bi-moon-fill': !themeService.isDarkTheme(), 'bi-sun-fill': themeService.isDarkTheme()}"></i>
+          <span class="ms-2 d-none d-sm-inline">{{ themeService.isDarkTheme() ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+        </button>
+
         <div class="d-none d-sm-block me-3" *ngIf="currentUser">
           <span class="text-secondary">
             Hola, <span class="fw-medium">{{ currentUser.name || 'Usuario' }}</span>
@@ -68,13 +73,13 @@
     <h4>🏙️ Destinos {{ isEditingTrip ? 'para ' + trip.name : '' }}</h4>
     <div class="row g-3">
       <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Nombre del Destino" [(ngModel)]="newDestination.name"
+        <input type="text" class="form-control" placeholder="Escribe la ciudad" [(ngModel)]="newDestination.name"
           [disabled]="!destinationSectionEnabled">
       </div>
 
       <!-- Input de país con autocompletado -->
       <div class="col-md-3 position-relative">
-        <input type="text" class="form-control" placeholder="País" [(ngModel)]="newDestination.country"
+        <input type="text" class="form-control" placeholder="Iniciales del pais en ingles" [(ngModel)]="newDestination.country"
           (input)="searchCountries($event)" (blur)="hideCountrySuggestions()" [disabled]="!destinationSectionEnabled">
 
         <!-- Lista de sugerencias de países -->
@@ -284,63 +289,36 @@
   <div class="mt-4 d-flex flex-column align-items-center">
     <a href="https://www.instagram.com/evvo.ps/?hl=es" target="_blank" class="mb-4 text-center text-decoration-none">
       <div class="hover-img-wrapper">
-        <img src="/assets/images/fondo-mini.png" alt="Servicios de programación"
-          class="img-fluid rounded shadow hover-scale">
-        <a class="mt-2 fw-semibold text-dark && descripcion">💻 Conocé mis servicios de programación en Instagram</a>
+        <img src="/assets/images/fondo-mini.jpg" alt="Servicios de programación"
+        class="img-fluid rounded shadow hover-scale">
+        <a class="descripcion">💻 Contrata mis servicios de programación en Instagram</a>
       </div>
     </a>
 
     <a href="https://www.instagram.com/europa_lowcost/?hl=es" target="_blank" class="text-center text-decoration-none">
       <div class="hover-img-wrapper">
-        <img src="/assets/images/europalowcost.png" alt="Consejos para viajar a Europa"
-          class="img-fluid rounded shadow hover-scale">
-        <a class="mt-2 fw-semibold text-dark && descripcion ">✈️ Tips para viajar por Europa en el menor costo posible</a>
+        <img src="/assets/images/europalowcost.jpg" alt="Consejos para viajar a Europa"
+        class="img-fluid rounded shadow hover-scale">
+        <a class="descripcion">✈️ Tips para viajar por Europa en el menor costo
+          posible</a>
       </div>
     </a>
   </div>
 </div>
 
 <br>
-<style>
-  .disabled-section {
-    opacity: 0.6;
-    pointer-events: none;
-  }
 
-  .saved-trip-card {
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 2px solid transparent;
-  }
-
-  .saved-trip-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .selected-trip {
-    border-color: #0d6efd;
-    background-color: rgba(13, 110, 253, 0.05);
-  }
-
-  .destination-pills {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* Estilos para el dropdown de países */
-  .z-index-dropdown {
-    z-index: 1050;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  .country-suggestion {
-    cursor: pointer;
-  }
-
-  .country-suggestion:hover {
-    background-color: #f8f9fa;
-  }
-</style>
+<footer class="bg-white border-top py-3 mt-auto app-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <p class="text-muted mb-0 small">
+          &copy; <a href="https://www.instagram.com/evvo.ps/?hl=es" target="_blank" class="text-decoration-none text-primary fw-semibold">
+            Una aplicación de EVVO+
+          </a> | 2025 Planificador de Viajes. Todos los derechos reservados.
+        </p>
+      </div>
+      
+    </div>
+  </div>
+</footer>

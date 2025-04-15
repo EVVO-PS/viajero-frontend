@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Trip } from '../../models/trip.model';
 import { Destination } from '../../models/destination.model';
 import { TripService } from '../../services/trip.service';
@@ -6,7 +6,7 @@ import { CountryService } from '../../services/country.service';
 import { Country } from '../../models/country.model';
 import { AuthService } from '../../auth/models/services/auth.service';
 import { User } from '../../auth/models/user.model';
-
+import { ThemeService } from '../../services/theme.services';
 
 import { NgFor, DatePipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [FormsModule, CommonModule, NgFor, DatePipe]
 })
-export class TripDashboardComponent implements OnInit {
+export class TripDashboardComponent implements OnInit, AfterViewInit {
   currentUser: User | null = null
 
   trip: Trip = { 
@@ -80,6 +80,7 @@ export class TripDashboardComponent implements OnInit {
     private readonly countryService: CountryService,
     private readonly authService: AuthService,
     private readonly router: Router,
+    public readonly themeService: ThemeService,
 
   ) {}
 
@@ -96,6 +97,40 @@ export class TripDashboardComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit(): void {
+    this.applyTextColor()
+    
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme()
+    this.applyTextColor()
+
+  }
+
+  applyTextColor(): void {
+    const isDark = this.themeService.isDarkTheme()
+    const descriptions = document.querySelectorAll('.descripcion')
+    const footer = document.querySelector('.app-footer')
+  
+    descriptions.forEach(el => {
+      if (isDark) {
+        el.classList.add('dark-text')
+      } else {
+        el.classList.remove('dark-text')
+      }
+    })
+  
+    if (footer) {
+      if (isDark) {
+        footer.classList.add('dark-footer')
+      } else {
+        footer.classList.remove('dark-footer')
+      }
+    }
+  }
+  
+  
 
   // Método auxiliar para formatear fechas para los atributos min/max de los inputs de fecha (corregido)
 formatDateForInput(date: Date | string | undefined): string {
