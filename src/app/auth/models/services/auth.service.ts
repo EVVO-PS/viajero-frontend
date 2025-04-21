@@ -4,12 +4,13 @@ import { BehaviorSubject, type Observable, tap } from "rxjs"
 import { User, AuthResponse, LoginCredentials, RegisterCredentials } from "../../models/user.model"
 import { Router } from "@angular/router"
 import { isPlatformBrowser } from "@angular/common"
+import { environment } from "../../../environments/environment"
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private readonly apiUrl = "http://localhost:8000/api"
+  private readonly apiUrl = environment.apiUrl
   private readonly currentUserSubject = new BehaviorSubject<User | null>(null)
   public currentUser$ = this.currentUserSubject.asObservable()
   private readonly isBrowser: boolean
