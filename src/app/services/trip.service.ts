@@ -5,12 +5,13 @@ import { catchError, map } from "rxjs/operators"
 import { Trip } from "../models/trip.model"
 import { Destination } from "../models/destination.model"
 import { AuthService } from "../auth/models/services/auth.service"
+import { environment } from "../environments/environment"
 
 @Injectable({
   providedIn: "root",
 })
 export class TripService {
-  private readonly baseUrl = "http://127.0.0.1:8000"
+  private readonly baseUrl = environment.apiUrl
   private readonly tripsUrl = `${this.baseUrl}/api/trips`
   private readonly destinationsUrl = `${this.baseUrl}/api/destinations`
 
