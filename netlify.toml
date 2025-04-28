@@ -1,6 +1,6 @@
 [build]
-  command = "ng build --configuration=production"
-  publish = "dist/viajero-frontend/browser"
+  command = "npm install && npm run build"
+  publish = "dist/viajero-frontend"
 
 [[redirects]]
   from = "/*"
