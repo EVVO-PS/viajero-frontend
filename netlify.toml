@@ -1,11 +1,8 @@
 [build]
-  command = "npm run build:netlify"
+  command = "npm run build"
   publish = "dist/viajero-frontend/browser"
   
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[functions]
-  directory = "netlify/functions"
