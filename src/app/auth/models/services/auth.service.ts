@@ -10,7 +10,7 @@ import { environment } from "../../../environments/environment"
   providedIn: "root",
 })
 export class AuthService {
-  private readonly apiUrl = environment.apiUrl
+  private readonly apiUrl = environment.apiBaseUrl
   private readonly currentUserSubject = new BehaviorSubject<User | null>(null)
   public currentUser$ = this.currentUserSubject.asObservable()
   private readonly isBrowser: boolean
