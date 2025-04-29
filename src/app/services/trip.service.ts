@@ -11,7 +11,7 @@ import { environment } from "../environments/environment"
   providedIn: "root",
 })
 export class TripService {
-  private readonly baseUrl = environment.apiUrl
+  private readonly baseUrl = environment.apiBaseUrl
   private readonly tripsUrl = `${this.baseUrl}/api/trips`
   private readonly destinationsUrl = `${this.baseUrl}/api/destinations`
 
