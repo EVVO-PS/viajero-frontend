@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --configuration=production",
+    "build:netlify": "ng build --configuration=production && ng run viajero-frontend:server:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:viajero-frontend": "node dist/viajero-frontend/server/server.mjs"
