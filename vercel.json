@@ -6,7 +6,7 @@
         "use": "@vercel/node"
       },
       {
-        "src": "dist/viajero-frontend/browser/**",
+        "src": "dist/viajero-frontend/**/*",
         "use": "@vercel/static"
       }
     ],
