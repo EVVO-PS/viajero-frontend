@@ -1,20 +1,11 @@
 {
     "version": 2,
     "builds": [
-      {
-        "src": "dist/viajero-frontend/server/main.js",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "dist/viajero-frontend/**/*",
-        "use": "@vercel/static"
-      }
+        { "src": "dist/viajero-frontend/index.html", "use": "@vercel/static" }
     ],
+    "outputDirectory": "dist/viajero-frontend",
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "dist/viajero-frontend/server/main.js"
-      }
+      { "src": "/(.*)", "dest": "/index.html" }
     ]
   }
   
