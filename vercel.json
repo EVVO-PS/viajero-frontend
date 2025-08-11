@@ -3,7 +3,7 @@
     "builds": [
         { "src": "dist/viajero-frontend/index.html", "use": "@vercel/static" }
     ],
-    "outputDirectory": "dist/viajero-frontend",
+    "outputDirectory": "dist/viajero-frontend/browser",
     "routes": [
       { "src": "/(.*)", "dest": "/index.html" }
     ]
