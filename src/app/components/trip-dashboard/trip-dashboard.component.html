@@ -79,7 +79,7 @@
 
       <!-- Input de país con autocompletado -->
       <div class="col-md-3 position-relative">
-        <input type="text" class="form-control" placeholder="Iniciales del pais en ingles" [(ngModel)]="newDestination.country"
+        <input type="text" class="form-control" placeholder="Pais" [(ngModel)]="newDestination.country"
           (input)="searchCountries($event)" (blur)="hideCountrySuggestions()" [disabled]="!destinationSectionEnabled">
 
         <!-- Lista de sugerencias de países -->
