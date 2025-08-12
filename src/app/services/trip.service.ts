@@ -12,8 +12,8 @@ import { environment } from "../environments/environment"
 })
 export class TripService {
   private readonly baseUrl = environment.apiBaseUrl
-  private readonly tripsUrl = `${this.baseUrl}/api/trips`
-  private readonly destinationsUrl = `${this.baseUrl}/api/destinations`
+  private readonly tripsUrl = `${this.baseUrl}/trips`
+  private readonly destinationsUrl = `${this.baseUrl}/destinations`
 
   constructor(
     private readonly http: HttpClient,
