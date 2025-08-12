@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://viajero-backend.vercel.app' 
+  apiBaseUrl: 'https://viajero-backend.vercel.app/api' 
 };
